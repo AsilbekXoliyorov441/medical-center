@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=0.1">
+<title>Salomatlik Markazi — Aloqa</title>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><circle cx=%2250%22 cy=%2250%22 r=%2245%22 fill=%22%230F4C4C%22/><path d=%22M25 50h12l6-18 10 36 8-24 5 12h14%22 stroke=%22%237FC8A9%22 stroke-width=%226%22 fill=%22none%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22/></svg>">
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300..700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+<script>
+  tailwind.config = {
+    theme: { extend: {
+      colors: { deep: '#0F4C4C', deepdark: '#0A3535', cream: '#FAFAF7', mint: '#7FC8A9', mintlight: '#DCEFE6', amber: '#E8A87C', ink: '#1B2A2A' },
+      fontFamily: { display: ['Fraunces', 'serif'], body: ['Inter', 'sans-serif'] },
+    } },
+  }
+</script>
+<style>
+  html { scroll-behavior: smooth; }
+  body { font-family: 'Inter', sans-serif; background: #FAFAF7; color: #1B2A2A; }
+  .font-display { font-family: 'Fraunces', serif; }
+  #loader { position: fixed; inset: 0; z-index: 9999; background: #0F4C4C; display: flex; align-items: center; justify-content: center; transition: opacity 0.6s ease, visibility 0.6s ease; }
+  #loader.hide { opacity: 0; visibility: hidden; }
+  .pulse-path { stroke-dasharray: 300; stroke-dashoffset: 300; animation: drawPulse 1.4s ease-in-out infinite; }
+  @keyframes drawPulse { 0% { stroke-dashoffset: 300; } 60% { stroke-dashoffset: 0; } 100% { stroke-dashoffset: -300; } }
+  .loader-text { animation: fadeBlink 1.6s ease-in-out infinite; }
+  @keyframes fadeBlink { 0%, 100% { opacity: 0.4; } 50% { opacity: 1; } }
+  .ecg-divider { width: 100%; height: 28px; }
+  .burger-line { transition: all 0.35s cubic-bezier(0.65,0,0.35,1); transform-origin: center; }
+  #burger.open .line1 { transform: translateY(8px) rotate(45deg); }
+  #burger.open .line2 { opacity: 0; }
+  #burger.open .line3 { transform: translateY(-8px) rotate(-45deg); }
+  #mobileMenu { transform: translateX(100%); transition: transform 0.45s cubic-bezier(0.65,0,0.35,1); }
+  #mobileMenu.open { transform: translateX(0); }
+  #appointmentModal { transition: opacity 0.3s ease, visibility 0.3s ease; }
+  #appointmentModal.hidden-modal { opacity: 0; visibility: hidden; pointer-events: none; }
+  #appointmentModal .modal-box { transition: transform 0.35s cubic-bezier(0.34,1.56,0.64,1), opacity 0.3s ease; }
+  #appointmentModal.hidden-modal .modal-box { transform: scale(0.92) translateY(20px); opacity: 0; }
+  ::selection { background: #7FC8A9; color: #0A3535; }
+  .nav-link { position: relative; }
+  .nav-link::after { content: ''; position: absolute; left: 0; bottom: -4px; width: 0; height: 2px; background: #7FC8A9; transition: width 0.3s ease; }
+  .nav-link:hover::after { width: 100%; }
+  
+  /* FAQ jozibador ko'rinishi uchun */
+  .faq-item .faq-answer { max-height: 0; overflow: hidden; transition: max-height 0.35s ease, padding 0.35s ease; }
+  .faq-item.open .faq-answer { max-height: 200px; padding-top: 0.75rem; }
+  .faq-item.open .faq-icon { transform: rotate(45deg); }
+  .faq-icon { transition: transform 0.3s ease; }
+  @media (max-width: 200px) { .min200-stack { font-size: 11px; } }
+</style>
+</head>
+<body class="bg-cream text-ink antialiased overflow-x-hidden">
+ 
+<div id="loader">
+  <div class="flex flex-col items-center gap-5">
+    <svg width="90" height="50" viewBox="0 0 200 60" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path class="pulse-path" d="M0 30 H50 L62 8 L78 52 L90 22 L100 30 H200" stroke="#7FC8A9" stroke-width="4" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+    <p class="loader-text text-cream/80 font-body text-sm tracking-[0.3em] uppercase">Yuklanmoqda</p>
+  </div>
+</div>
+ 
+<header class="fixed top-0 left-0 w-full z-50 bg-cream/90 backdrop-blur-md border-b border-deep/10">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-10 flex items-center justify-between h-[72px] min200-stack">
+    <a href="index.html" class="flex items-center gap-2 shrink-0">
+      <svg width="34" height="34" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="50" cy="50" r="45" fill="#0F4C4C"/>
+        <path d="M25 50h12l6-18 10 36 8-24 5 12h14" stroke="#7FC8A9" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      <span class="font-display font-semibold text-lg sm:text-xl text-deep whitespace-nowrap">Salomatlik<span class="text-mint">.</span></span>
+    </a>
+    <nav class="hidden md:flex items-center gap-9">
+      <a href="index.html" class="nav-link font-body text-sm font-medium text-ink/70 hover:text-deep transition-colors">Bosh sahifa</a>
+      <a href="about.html" class="nav-link font-body text-sm font-medium text-ink/70 hover:text-deep transition-colors">Biz haqimizda</a>
+      <a href="services.html" class="nav-link font-body text-sm font-medium text-ink/70 hover:text-deep transition-colors">Xizmatlar</a>
+      <a href="doctors.html" class="nav-link font-body text-sm font-medium text-ink/70 hover:text-deep transition-colors">Shifokorlar</a>
+      <a href="contact.html" class="nav-link font-body text-sm font-medium text-deep">Aloqa</a>
+    </nav>
+    <div class="flex items-center gap-3">
+      <button onclick="openModal()" class="hidden sm:inline-flex items-center gap-2 bg-deep hover:bg-deepdark text-cream font-body font-semibold text-sm px-5 py-2.5 rounded-full transition-colors duration-300">Qabulga yozilish</button>
+      <button id="burger" onclick="toggleMenu()" class="md:hidden relative w-10 h-10 flex flex-col items-center justify-center gap-[6px] shrink-0" aria-label="Menyu">
+        <span class="burger-line line1 block w-6 h-[2px] bg-deep rounded-full"></span>
+        <span class="burger-line line2 block w-6 h-[2px] bg-deep rounded-full"></span>
+        <span class="burger-line line3 block w-6 h-[2px] bg-deep rounded-full"></span>
+      </button>
+    </div>
+  </div>
+</header>
+ 
+<div id="mobileMenu" class="fixed top-0 right-0 h-full w-[78%] max-w-[320px] bg-deep z-40 flex flex-col pt-28 px-8 gap-2 shadow-2xl">
+  <a href="index.html" class="text-cream/80 font-display text-2xl py-3 border-b border-cream/10">Bosh sahifa</a>
+  <a href="about.html" class="text-cream/80 font-display text-2xl py-3 border-b border-cream/10">Biz haqimizda</a>
+  <a href="services.html" class="text-cream/80 font-display text-2xl py-3 border-b border-cream/10">Xizmatlar</a>
+  <a href="doctors.html" class="text-cream/80 font-display text-2xl py-3 border-b border-cream/10">Shifokorlar</a>
+  <a href="contact.html" class="text-cream font-display text-2xl py-3 border-b border-cream/10">Aloqa</a>
+  <button onclick="openModal()" class="mt-8 bg-mint text-deepdark font-semibold text-sm py-3.5 rounded-full">Qabulga yozilish</button>
+</div>
+<div id="menuOverlay" onclick="toggleMenu()" class="fixed inset-0 bg-black/40 z-30 hidden"></div>
+ 
+<section class="relative pt-[150px] sm:pt-[170px] pb-16 px-4 sm:px-6 lg:px-10 overflow-hidden">
+  <div class="absolute -top-20 -right-32 w-[420px] h-[420px] bg-mintlight rounded-full blur-3xl opacity-60 pointer-events-none"></div>
+  <div class="max-w-5xl mx-auto text-center relative" data-aos="fade-up">
+    <span class="inline-block bg-mintlight text-deepdark font-body font-semibold text-xs tracking-wider uppercase px-4 py-2 rounded-full mb-6">Biz bilan bog'laning</span>
+    <h1 class="font-display font-semibold text-[2.2rem] sm:text-5xl lg:text-[3.2rem] leading-[1.1] text-deep mb-5">Savolingiz bormi? Yozing</h1>
+    <p class="font-body text-ink/65 text-base sm:text-lg leading-relaxed max-w-2xl mx-auto">Jamoamiz har doim sizga yordam berishga tayyor — qulay usulda bog'laning.</p>
+  </div>
+</section>
+ 
+<svg class="ecg-divider" viewBox="0 0 1200 28" preserveAspectRatio="none"><path d="M0 14 H460 L490 2 L520 26 L550 14 H1200" stroke="#0F4C4C" stroke-width="2" fill="none" opacity="0.15"/></svg>
+ 
+<section class="py-20 px-4 sm:px-6 lg:px-10">
+  <div class="max-w-7xl mx-auto grid lg:grid-cols-5 gap-10">
+ 
+    <div class="lg:col-span-2 flex flex-col gap-5">
+      <div data-aos="fade-right" data-aos-delay="0" class="bg-deep rounded-2xl p-7 flex items-start gap-4">
+        <div class="w-11 h-11 rounded-xl bg-mint/15 flex items-center justify-center shrink-0">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72c.127.96.362 1.903.7 2.81a2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.338 1.85.573 2.81.7A2 2 0 0122 16.92z" stroke="#7FC8A9" stroke-width="1.6"/></svg>
+        </div>
+        <div>
+          <h4 class="font-display font-semibold text-cream mb-1">Telefon</h4>
+          <p class="font-body text-sm text-cream/55">+998 71 200 00 00</p>
+          <p class="font-body text-sm text-cream/55">+998 90 123 45 67</p>
+        </div>
+      </div>
+      <div data-aos="fade-right" data-aos-delay="100" class="bg-deep rounded-2xl p-7 flex items-start gap-4">
+        <div class="w-11 h-11 rounded-xl bg-mint/15 flex items-center justify-center shrink-0">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M4 4h16v16H4z" stroke="#7FC8A9" stroke-width="1.6"/><path d="M4 6l8 7 8-7" stroke="#7FC8A9" stroke-width="1.6"/></svg>
+        </div>
+        <div>
+          <h4 class="font-display font-semibold text-cream mb-1">Email</h4>
+          <p class="font-body text-sm text-cream/55">info@salomatlik.uz</p>
+        </div>
+      </div>
+      <div data-aos="fade-right" data-aos-delay="200" class="bg-deep rounded-2xl p-7 flex items-start gap-4">
+        <div class="w-11 h-11 rounded-xl bg-mint/15 flex items-center justify-center shrink-0">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z" stroke="#7FC8A9" stroke-width="1.6"/><circle cx="12" cy="10" r="3" stroke="#7FC8A9" stroke-width="1.6"/></svg>
+        </div>
+        <div>
+          <h4 class="font-display font-semibold text-cream mb-1">Manzil</h4>
+          <p class="font-body text-sm text-cream/55">Toshkent sh., Yunusobod tumani, Amir Temur ko'chasi 45</p>
+        </div>
+      </div>
+      <div data-aos="fade-right" data-aos-delay="300" class="bg-deep rounded-2xl p-7 flex items-start gap-4">
+        <div class="w-11 h-11 rounded-xl bg-mint/15 flex items-center justify-center shrink-0">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="#7FC8A9" stroke-width="1.6"/><path d="M12 7v5l3 3" stroke="#7FC8A9" stroke-width="1.6"/></svg>
+        </div>
+        <div>
+          <h4 class="font-display font-semibold text-cream mb-1">Ish vaqti</h4>
+          <p class="font-body text-sm text-cream/55">Dush–Shan: 08:00–20:00</p>
+          <p class="font-body text-sm text-cream/55">Shoshilinch yordam: 24/7</p>
+        </div>
+      </div>
+    </div>
+ 
+    <div data-aos="fade-left" class="lg:col-span-3 bg-white border border-deep/8 rounded-[1.75rem] p-7 sm:p-10">
+      <h3 class="font-display font-semibold text-2xl text-deep mb-1.5">Xabar yuborish</h3>
+      <p class="font-body text-sm text-ink/55 mb-7">Formani to'ldiring, 24 soat ichida javob beramiz.</p>
+      <form class="grid sm:grid-cols-2 gap-5" onsubmit="return false;">
+        <div>
+          <label class="font-body text-xs font-semibold text-deep/70 uppercase tracking-wide mb-1.5 block">Ism</label>
+          <input type="text" placeholder="Ismingiz" class="w-full bg-cream border border-deep/10 rounded-xl px-4 py-3 font-body text-sm text-ink focus:outline-none focus:ring-2 focus:ring-mint transition-all">
+        </div>
+        <div>
+          <label class="font-body text-xs font-semibold text-deep/70 uppercase tracking-wide mb-1.5 block">Telefon</label>
+          <input type="tel" placeholder="+998 90 123 45 67" class="w-full bg-cream border border-deep/10 rounded-xl px-4 py-3 font-body text-sm text-ink focus:outline-none focus:ring-2 focus:ring-mint transition-all">
+        </div>
+        <div class="sm:col-span-2">
+          <label class="font-body text-xs font-semibold text-deep/70 uppercase tracking-wide mb-1.5 block">Email</label>
+          <input type="email" placeholder="email@misol.uz" class="w-full bg-cream border border-deep/10 rounded-xl px-4 py-3 font-body text-sm text-ink focus:outline-none focus:ring-2 focus:ring-mint transition-all">
+        </div>
+        <div class="sm:col-span-2">
+          <label class="font-body text-xs font-semibold text-deep/70 uppercase tracking-wide mb-1.5 block">Xabar</label>
+          <textarea rows="4" placeholder="Savolingizni yozing..." class="w-full bg-cream border border-deep/10 rounded-xl px-4 py-3 font-body text-sm text-ink focus:outline-none focus:ring-2 focus:ring-mint transition-all resize-none"></textarea>
+        </div>
+        <button type="submit" class="sm:col-span-2 bg-deep hover:bg-deepdark text-cream font-body font-semibold py-3.5 rounded-full transition-colors duration-300">Xabarni yuborish</button>
+      </form>
+    </div>
+  </div>
+</section>
+ 
+<section class="px-4 sm:px-6 lg:px-10 pb-20" data-aos="fade-up">
+  <div class="max-w-7xl mx-auto rounded-[2rem] overflow-hidden shadow-xl shadow-deep/10 h-[380px]">
+    <iframe
+      src="https://www.openstreetmap.org/export/embed.html?bbox=69.27%2C41.31%2C69.30%2C41.33&layer=mapnik&marker=41.32%2C69.285"
+      class="w-full h-full border-0" loading="lazy" title="Markaz manzili">
+    </iframe>
+  </div>
+</section>
+ 
+<section class="py-20 px-4 sm:px-6 lg:px-10 bg-deep">
+  <div class="max-w-3xl mx-auto">
+    <div class="text-center mb-14" data-aos="fade-up">
+      <span class="text-mint font-body font-semibold text-xs tracking-wider uppercase">Tez-tez so'raladigan savollar</span>
+      <h2 class="font-display font-semibold text-3xl sm:text-4xl text-cream mt-3">Sizga yordam beramiz</h2>
+    </div>
+    <div class="flex flex-col gap-3">
+      <div data-aos="fade-up" class="faq-item bg-deepdark/60 border border-cream/10 rounded-2xl px-6 py-5 cursor-pointer" onclick="this.classList.toggle('open')">
+        <div class="flex items-center justify-between">
+          <h4 class="font-display font-semibold text-cream text-base pr-4">Qabulga qanday yozilsam bo'ladi?</h4>
+          <span class="faq-icon text-mint text-2xl leading-none shrink-0">+</span>
+        </div>
+        <div class="faq-answer">
+          <p class="font-body text-sm text-cream/55 leading-relaxed">Saytdagi "Qabulga yozilish" tugmasi orqali yoki telefon qilib bron qilishingiz mumkin.</p>
+        </div>
+      </div>
+      <div data-aos="fade-up" class="faq-item bg-deepdark/60 border border-cream/10 rounded-2xl px-6 py-5 cursor-pointer" onclick="this.classList.toggle('open')">
+        <div class="flex items-center justify-between">
+          <h4 class="font-display font-semibold text-cream text-base pr-4">Sug'urta polisi qabul qilinadimi?</h4>
+          <span class="faq-icon text-mint text-2xl leading-none shrink-0">+</span>
+        </div>
+        <div class="faq-answer">
+          <p class="font-body text-sm text-cream/55 leading-relaxed">Ha, yetakchi sug'urta kompaniyalari bilan hamkorlik qilamiz. Batafsil ma'lumot uchun qo'ng'iroq qiling.</p>
+        </div>
+      </div>
+      <div data-aos="fade-up" class="faq-item bg-deepdark/60 border border-cream/10 rounded-2xl px-6 py-5 cursor-pointer" onclick="this.classList.toggle('open')">
+        <div class="flex items-center justify-between">
+          <h4 class="font-display font-semibold text-cream text-base pr-4">Shoshilinch yordam mavjudmi?</h4>
+          <span class="faq-icon text-mint text-2xl leading-none shrink-0">+</span>
+        </div>
+        <div class="faq-answer">
+          <p class="font-body text-sm text-cream/55 leading-relaxed">Ha, markazimiz 24/7 shoshilinch tibbiy yordam xizmatini taqdim etadi.</p>
+        </div>
+      </div>
+      <div data-aos="fade-up" class="faq-item bg-deepdark/60 border border-cream/10 rounded-2xl px-6 py-5 cursor-pointer" onclick="this.classList.toggle('open')">
+        <div class="flex items-center justify-between">
+          <h4 class="font-display font-semibold text-cream text-base pr-4">Onlayn konsultatsiya bormi?</h4>
+          <span class="faq-icon text-mint text-2xl leading-none shrink-0">+</span>
+        </div>
+        <div class="faq-answer">
+          <p class="font-body text-sm text-cream/55 leading-relaxed">Ha, video aloqa orqali ham shifokor bilan masofaviy konsultatsiya o'tkazish mumkin.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+ 
+<footer class="bg-deepdark px-4 sm:px-6 lg:px-10 py-14">
+  <div class="max-w-7xl mx-auto grid sm:grid-cols-2 lg:grid-cols-4 gap-10">
+    <div>
+      <div class="flex items-center gap-2 mb-4">
+        <svg width="30" height="30" viewBox="0 0 100 100" fill="none"><circle cx="50" cy="50" r="45" fill="#7FC8A9"/><path d="M25 50h12l6-18 10 36 8-24 5 12h14" stroke="#0A3535" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <span class="font-display font-semibold text-lg text-cream">Salomatlik</span>
+      </div>
+      <p class="font-body text-sm text-cream/45 leading-relaxed">Sizning sog'lig'ingiz uchun zamonaviy tibbiy yordam markazi.</p>
+    </div>
+    <div>
+      <h5 class="font-display font-semibold text-cream mb-4">Sahifalar</h5>
+      <div class="flex flex-col gap-2.5">
+        <a href="about.html" class="font-body text-sm text-cream/45 hover:text-mint transition-colors">Biz haqimizda</a>
+        <a href="services.html" class="font-body text-sm text-cream/45 hover:text-mint transition-colors">Xizmatlar</a>
+        <a href="doctors.html" class="font-body text-sm text-cream/45 hover:text-mint transition-colors">Shifokorlar</a>
+        <a href="contact.html" class="font-body text-sm text-cream/45 hover:text-mint transition-colors">Aloqa</a>
+      </div>
+    </div>
+    <div>
+      <h5 class="font-display font-semibold text-cream mb-4">Aloqa</h5>
+      <div class="flex flex-col gap-2.5 font-body text-sm text-cream/45">
+        <p>+998 71 200 00 00</p>
+        <p>info@salomatlik.uz</p>
+        <p>Toshkent sh., Yunusobod tumani</p>
+      </div>
+    </div>
+    <div>
+      <h5 class="font-display font-semibold text-cream mb-4">Ish vaqti</h5>
+      <div class="flex flex-col gap-2.5 font-body text-sm text-cream/45">
+        <p>Dush–Shan: 08:00–20:00</p>
+        <p>Yakshanba: Shoshilinch yordam 24/7</p>
+      </div>
+    </div>
+  </div>
+  <div class="max-w-7xl mx-auto border-t border-cream/10 mt-10 pt-6 text-center">
+    <p class="font-body text-xs text-cream/35">© 2026 Salomatlik Markazi. Barcha huquqlar himoyalangan.</p>
+  </div>
+</footer>
+ 
+<div id="appointmentModal" class="hidden-modal fixed inset-0 z-[100] flex items-center justify-center p-4">
+  <div onclick="closeModal()" class="absolute inset-0 bg-deepdark/70 backdrop-blur-sm"></div>
+  <div class="modal-box relative bg-cream w-full max-w-md rounded-[1.75rem] p-7 sm:p-9 shadow-2xl">
+    <button onclick="closeModal()" class="absolute top-5 right-5 w-9 h-9 rounded-full bg-deep/5 hover:bg-deep/10 flex items-center justify-center transition-colors">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M6 6l12 12M18 6L6 18" stroke="#0F4C4C" stroke-width="2" stroke-linecap="round"/></svg>
+    </button>
+    <span class="inline-block bg-mintlight text-deepdark font-body font-semibold text-xs tracking-wider uppercase px-3.5 py-1.5 rounded-full mb-4">Bepul konsulturaliya</span>
+    <h3 class="font-display font-semibold text-2xl text-deep mb-1.5">Qabulga yozilish</h3>
+    <p class="font-body text-sm text-ink/55 mb-6">Ma'lumotlaringizni qoldiring, operatorimiz tez orada bog'lanadi.</p>
+    <form class="flex flex-col gap-4" onsubmit="return false;">
+      <div>
+        <label class="font-body text-xs font-semibold text-deep/70 uppercase tracking-wide mb-1.5 block">To'liq ism</label>
+        <input type="text" placeholder="Ismingizni kiriting" class="w-full bg-white border border-deep/10 rounded-xl px-4 py-3 font-body text-sm text-ink focus:outline-none focus:ring-2 focus:ring-mint transition-all">
+      </div>
+      <div>
+        <label class="font-body text-xs font-semibold text-deep/70 uppercase tracking-wide mb-1.5 block">Telefon raqam</label>
+        <input type="tel" placeholder="+998 90 123 45 67" class="w-full bg-white border border-deep/10 rounded-xl px-4 py-3 font-body text-sm text-ink focus:outline-none focus:ring-2 focus:ring-mint transition-all">
+      </div>
+      <div>
+        <label class="font-body text-xs font-semibold text-deep/70 uppercase tracking-wide mb-1.5 block">Yo'nalish</label>
+        <select class="w-full bg-white border border-deep/10 rounded-xl px-4 py-3 font-body text-sm text-ink focus:outline-none focus:ring-2 focus:ring-mint transition-all">
+          <option>Kardiologiya</option><option>Pediatriya</option><option>Stomatologiya</option><option>Boshqa</option>
+        </select>
+      </div>
+      <button type="submit" class="mt-2 bg-deep hover:bg-deepdark text-cream font-body font-semibold py-3.5 rounded-full transition-colors duration-300">Yuborish</button>
+    </form>
+  </div>
+</div>
+ 
+<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+<script>
+  window.addEventListener('load', function() { setTimeout(function() { document.getElementById('loader').classList.add('hide'); }, 500); });
+  AOS.init({ once: true, duration: 800, easing: 'ease-out-cubic' });
+  
+  function toggleMenu() {
+    document.getElementById('mobileMenu').classList.toggle('open');
+    document.getElementById('menuOverlay').classList.toggle('hidden');
+    document.getElementById('burger').classList.toggle('open');
+    document.body.classList.toggle('overflow-hidden');
+  }
+  
+  function openModal() { document.getElementById('appointmentModal').classList.remove('hidden-modal'); document.body.classList.add('overflow-hidden'); }
+  function closeModal() { document.getElementById('appointmentModal').classList.add('hidden-modal'); document.body.classList.remove('overflow-hidden'); }
+</script>
+</body>
+</html>

@@ -1,0 +1,851 @@
+
+
+Врачи · HTML
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>MedStar — Malakali Shifokorlar</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+<script>
+tailwind.config={
+  theme:{
+    extend:{
+      colors:{
+        forest:{'50':'#F0FBF4','100':'#DCFCE7','200':'#BBF7D0','300':'#86EFAC','500':'#22C55E','600':'#16A34A','700':'#15803D','800':'#166534','900':'#14532D','950':'#052E16'},
+        ink:{'50':'#F7F9F7','100':'#EEF2EE','200':'#DCE6DC','300':'#B8CCB8','500':'#4A5E4D','700':'#2D3F2F','900':'#111B14'},
+        gold:{'300':'#FCD34D','400':'#FBBF24','500':'#D4A017','600':'#B8860B','700':'#92650A'},
+        blush:'#FDF8F4',
+      },
+      fontFamily:{
+        serif:['Cormorant Garamond','Georgia','serif'],
+        sans:['Plus Jakarta Sans','sans-serif'],
+      },
+    }
+  }
+}
+</script>
+<style>
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{font-family:'Plus Jakarta Sans',sans-serif;background:#FAFCF8;color:#111B14;min-width:200px;overflow-x:hidden}
+ 
+.hero-diagonal{clip-path:polygon(0 0,100% 0,100% 82%,0 100%)}
+@media(max-width:640px){.hero-diagonal{clip-path:polygon(0 0,100% 0,100% 92%,0 100%)}}
+ 
+@keyframes ticker{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
+.ticker-inner{display:flex;animation:ticker 28s linear infinite;white-space:nowrap}
+.ticker-inner:hover{animation-play-state:paused}
+ 
+@keyframes revealUp{from{opacity:0;transform:translateY(32px)}to{opacity:1;transform:translateY(0)}}
+.reveal{opacity:0;animation:revealUp .65s ease forwards}
+.delay-1{animation-delay:.1s}.delay-2{animation-delay:.2s}.delay-3{animation-delay:.3s}.delay-4{animation-delay:.4s}
+ 
+.doc-card{transition:transform .3s cubic-bezier(.34,1.56,.64,1),box-shadow .3s}
+.doc-card:hover{transform:translateY(-8px);box-shadow:0 24px 48px rgba(21,128,61,.14)}
+.doc-card:hover .doc-overlay{opacity:1}
+.doc-overlay{opacity:0;transition:opacity .3s}
+ 
+.car-track{display:flex;transition:transform .55s cubic-bezier(.4,0,.2,1)}
+.car-slide{flex:0 0 100%;min-width:0}
+ 
+@keyframes pdot{0%,100%{transform:scale(1);opacity:1}50%{transform:scale(1.6);opacity:.5}}
+.pdot{animation:pdot 1.8s ease-in-out infinite}
+ 
+@keyframes chatIn{from{opacity:0;transform:translateY(16px) scale(.96)}to{opacity:1;transform:translateY(0) scale(1)}}
+.chat-panel{animation:chatIn .3s ease}
+ 
+@keyframes blink{0%,80%,100%{opacity:0}40%{opacity:1}}
+.dot1{animation:blink 1.4s .0s infinite}
+.dot2{animation:blink 1.4s .2s infinite}
+.dot3{animation:blink 1.4s .4s infinite}
+ 
+::-webkit-scrollbar{width:5px;height:5px}
+::-webkit-scrollbar-thumb{background:#BBF7D0;border-radius:4px}
+ 
+/* Mobile menu */
+#mobile-menu{
+  max-height:0;
+  overflow:hidden;
+  transition:max-height 0.35s cubic-bezier(.4,0,.2,1), opacity 0.25s ease;
+  opacity:0;
+}
+#mobile-menu.open{
+  max-height:400px;
+  opacity:1;
+}
+#hamburger .bar{
+  display:block;
+  width:22px;height:2px;
+  background:#14532D;
+  border-radius:2px;
+  transition:transform 0.3s ease, opacity 0.2s ease;
+  transform-origin:center;
+}
+#hamburger.active .bar:nth-child(1){transform:translateY(7px) rotate(45deg)}
+#hamburger.active .bar:nth-child(2){opacity:0;transform:scaleX(0)}
+#hamburger.active .bar:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
+</style>
+</head>
+<body>
+ 
+<!-- ════════════════ NAVBAR ════════════════ -->
+<header class="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-ink-100">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 flex items-center justify-between h-16">
+    <!-- Logo -->
+    <a href="index.html" class="flex items-center gap-2.5 flex-shrink-0">
+      <div class="w-9 h-9 rounded-xl bg-forest-900 flex items-center justify-center">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#D4A017" stroke-width="2.2" stroke-linecap="round"><path d="M12 2a10 10 0 1 0 0 20A10 10 0 0 0 12 2z"/><path d="M12 8v8M8 12h8"/></svg>
+      </div>
+      <div>
+        <span class="font-serif font-700 text-forest-900 text-lg leading-none tracking-tight">MedStar</span>
+        <span class="block text-gold-500 text-[10px] font-semibold tracking-[.2em] uppercase">Klinikasi</span>
+      </div>
+    </a>
+ 
+    <!-- Desktop nav -->
+    <nav class="hidden lg:flex items-center gap-7 text-sm font-medium text-ink-500">
+      <a href="index.html" class="hover:text-forest-800 transition">Bosh sahifa</a>
+      <a href="about.html" class="hover:text-forest-800 transition">Biz haqimizda</a>
+      <a href="doctors.html" class="text-forest-800 font-semibold border-b-2 border-gold-500 pb-0.5">Shifokorlar</a>
+      <a href="services.html" class="hover:text-forest-800 transition">Xizmatlar</a>
+      <a href="contact.html" class="hover:text-forest-800 transition">Bog'lanish</a>
+    </nav>
+ 
+    <!-- Right side -->
+    <div class="flex items-center gap-2 sm:gap-3">
+      <a href="tel:+998712000000" class="hidden sm:flex items-center gap-1.5 text-sm font-medium text-forest-700 hover:text-forest-900 transition">
+        <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" stroke-linecap="round"><path d="M22 16.92v3a2 2 0 01-2.18 2A19.79 19.79 0 014 4.18 2 2 0 016.09 2h3a2 2 0 012 1.72c.13.96.34 1.9.65 2.81a2 2 0 01-.45 2.11L10.13 9.6a16 16 0 006.27 6.27l1.06-1.06a2 2 0 012.11-.45c.91.31 1.85.52 2.81.65A2 2 0 0122 16.92z"/></svg>
+        +998 71 200-00-00
+      </a>
+      <button onclick="openAppt()" class="hidden sm:block bg-forest-900 hover:bg-forest-800 text-white text-xs sm:text-sm font-semibold px-4 py-2.5 rounded-xl transition">
+        Qabul olish
+      </button>
+      <!-- Hamburger — mobile only -->
+      <button id="hamburger" onclick="toggleMenu()" class="lg:hidden flex flex-col gap-[5px] items-center justify-center w-10 h-10 rounded-xl hover:bg-forest-50 transition" aria-label="Menyu">
+        <span class="bar"></span>
+        <span class="bar"></span>
+        <span class="bar"></span>
+      </button>
+    </div>
+  </div>
+ 
+  <!-- Mobile menu -->
+  <div id="mobile-menu" class="lg:hidden border-t border-ink-100 bg-white/98">
+    <nav class="max-w-7xl mx-auto px-4 py-4 flex flex-col gap-1">
+      <a href="index.html" onclick="closeMenu()" class="flex items-center gap-3 px-3 py-3 rounded-xl hover:bg-forest-50 text-sm font-medium text-ink-700 hover:text-forest-800 transition">
+        <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+        Bosh sahifa
+      </a>
+      <a href="about.html" onclick="closeMenu()" class="flex items-center gap-3 px-3 py-3 rounded-xl hover:bg-forest-50 text-sm font-medium text-ink-700 hover:text-forest-800 transition">
+        <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
+        Biz haqimizda
+      </a>
+      <a href="doctors.html" onclick="closeMenu()" class="flex items-center gap-3 px-3 py-3 rounded-xl bg-forest-50 text-sm font-semibold text-forest-800 border border-forest-200">
+        <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+        Shifokorlar
+        <span class="ml-auto text-[10px] bg-gold-500 text-forest-900 font-bold px-2 py-0.5 rounded-full">Faol</span>
+      </a>
+      <a href="services.html" onclick="closeMenu()" class="flex items-center gap-3 px-3 py-3 rounded-xl hover:bg-forest-50 text-sm font-medium text-ink-700 hover:text-forest-800 transition">
+        <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
+        Xizmatlar
+      </a>
+      <a href="contact.html" onclick="closeMenu()" class="flex items-center gap-3 px-3 py-3 rounded-xl hover:bg-forest-50 text-sm font-medium text-ink-700 hover:text-forest-800 transition">
+        <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 01-2.18 2A19.79 19.79 0 014 4.18 2 2 0 016.09 2h3a2 2 0 012 1.72c.13.96.34 1.9.65 2.81a2 2 0 01-.45 2.11L10.13 9.6a16 16 0 006.27 6.27l1.06-1.06a2 2 0 012.11-.45c.91.31 1.85.52 2.81.65A2 2 0 0122 16.92z"/></svg>
+        Bog'lanish
+      </a>
+      <!-- Mobile CTA -->
+      <div class="mt-2 pt-3 border-t border-ink-100 flex gap-2">
+        <a href="tel:+998712000000" class="flex-1 flex items-center justify-center gap-2 border border-forest-300 text-forest-800 font-semibold text-sm py-2.5 rounded-xl hover:bg-forest-50 transition">
+          📞 Qo'ng'iroq
+        </a>
+        <button onclick="openAppt();closeMenu();" class="flex-1 bg-forest-900 hover:bg-forest-800 text-white font-semibold text-sm py-2.5 rounded-xl transition">
+          Qabul olish
+        </button>
+      </div>
+    </nav>
+  </div>
+</header>
+ 
+<!-- ════════════════ HERO ════════════════ -->
+<section class="hero-diagonal bg-forest-900 text-white relative overflow-hidden pb-20 sm:pb-28">
+  <div class="absolute inset-0" style="background:radial-gradient(ellipse 60% 80% at 80% 30%,rgba(212,160,23,.12) 0%,transparent 70%),radial-gradient(ellipse 40% 60% at 10% 80%,rgba(22,163,74,.10) 0%,transparent 60%)"></div>
+ 
+  <div class="relative z-10 border-b border-white/10 py-3 px-4 sm:px-6">
+    <div class="max-w-7xl mx-auto flex items-center justify-between text-xs text-white/50">
+      <span class="flex items-center gap-2"><span class="w-1.5 h-1.5 rounded-full bg-emerald-400 pdot"></span>Onlayn qabul faol</span>
+      <span class="hidden sm:block">Dush–Yak 08:00–22:00 · Favqulodda 24/7</span>
+    </div>
+  </div>
+ 
+  <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 pt-14 sm:pt-20">
+    <div class="grid lg:grid-cols-2 gap-10 items-center">
+      <div class="reveal">
+        <p class="text-gold-400 text-xs font-semibold tracking-[.25em] uppercase mb-4">Toshkentning yetakchi klinikasi</p>
+        <h1 class="font-serif text-4xl sm:text-5xl lg:text-6xl font-700 leading-[1.08] mb-6">
+          Sog'liqni<br/><em class="not-italic text-gold-400">mutaxassislarga</em><br/>ishoning
+        </h1>
+        <p class="text-white/65 text-sm sm:text-base leading-relaxed max-w-md mb-8">
+          120+ sertifikatlangan shifokor. Zamonaviy diagnostika. Har bir bemorga — individual protokol va to'liq g'amxo'rlik.
+        </p>
+        <div class="flex flex-wrap gap-3 mb-10">
+          <button onclick="openAppt()" class="bg-gold-500 hover:bg-gold-600 text-forest-900 font-bold px-6 py-3 rounded-xl text-sm transition">
+            Qabul belgilash
+          </button>
+          <a href="#shifokorlar" class="border border-white/25 hover:border-white/50 text-white font-medium px-6 py-3 rounded-xl text-sm transition flex items-center gap-2">
+            Shifokorlar →
+          </a>
+        </div>
+        <div class="flex flex-wrap gap-6">
+          <div><p class="font-serif text-3xl font-700 text-gold-400">120+</p><p class="text-white/50 text-xs mt-0.5">Mutaxassis</p></div>
+          <div class="w-px bg-white/15 hidden sm:block"></div>
+          <div><p class="font-serif text-3xl font-700 text-gold-400">50K+</p><p class="text-white/50 text-xs mt-0.5">Bemor</p></div>
+          <div class="w-px bg-white/15 hidden sm:block"></div>
+          <div><p class="font-serif text-3xl font-700 text-gold-400">15+</p><p class="text-white/50 text-xs mt-0.5">Yil tajriba</p></div>
+          <div class="w-px bg-white/15 hidden sm:block"></div>
+          <div><p class="font-serif text-3xl font-700 text-gold-400">98%</p><p class="text-white/50 text-xs mt-0.5">Mamnunlik</p></div>
+        </div>
+      </div>
+      <div class="hidden lg:grid grid-cols-2 gap-3 reveal delay-2">
+        <div class="col-span-2 rounded-2xl overflow-hidden bg-white/8 border border-white/12 p-5 flex items-center gap-4">
+          <img src="https://randomuser.me/api/portraits/women/44.jpg" class="w-14 h-14 rounded-xl object-cover flex-shrink-0"/>
+          <div>
+            <p class="font-serif font-600 text-lg">Dr. Nilufar Yusupova</p>
+            <p class="text-gold-400 text-xs font-medium">Bosh Kardiolog · 16 yil tajriba</p>
+            <div class="flex gap-0.5 mt-1.5">
+              <svg width="11" height="11" viewBox="0 0 24 24" fill="#FBBF24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+              <svg width="11" height="11" viewBox="0 0 24 24" fill="#FBBF24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+              <svg width="11" height="11" viewBox="0 0 24 24" fill="#FBBF24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+              <svg width="11" height="11" viewBox="0 0 24 24" fill="#FBBF24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+              <svg width="11" height="11" viewBox="0 0 24 24" fill="#FBBF24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+              <span class="text-white/60 text-xs ml-1">4.9</span>
+            </div>
+          </div>
+        </div>
+        <div class="rounded-2xl bg-forest-800/60 border border-white/10 p-5 flex flex-col justify-between">
+          <p class="text-white/50 text-xs font-medium uppercase tracking-widest">Bugungi qabullar</p>
+          <p class="font-serif text-4xl font-700 text-gold-400 mt-2">47</p>
+          <p class="text-white/40 text-xs">8 bo'limda</p>
+        </div>
+        <div class="rounded-2xl bg-white/8 border border-white/10 p-5 flex flex-col justify-between">
+          <div class="w-8 h-8 rounded-lg bg-emerald-400/20 flex items-center justify-center mb-3">
+            <svg width="16" height="16" fill="none" stroke="#34D399" stroke-width="2" viewBox="0 0 24 24" stroke-linecap="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+          </div>
+          <p class="font-serif font-600 text-lg">ISO 9001</p>
+          <p class="text-white/50 text-xs">Sifat sertifikati</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+ 
+<!-- ════════════════ TICKER ════════════════ -->
+<div class="bg-gold-500 py-3 overflow-hidden">
+  <div class="ticker-inner text-forest-900 font-semibold text-sm gap-12 flex">
+    <div class="flex gap-12 px-6">
+      <span>🫀 Kardiologiya</span><span>🧠 Nevrologiya</span><span>👁 Oftalmologiya</span><span>🦷 Stomatologiya</span><span>🩺 Pediatriya</span><span>🔬 Labaratoriya</span><span>🦴 Ortopediya</span><span>💊 Endokrinologiya</span><span>🧬 Ginekologiya</span><span>🫁 Pulmonologiya</span>
+    </div>
+    <div class="flex gap-12 px-6" aria-hidden="true">
+      <span>🫀 Kardiologiya</span><span>🧠 Nevrologiya</span><span>👁 Oftalmologiya</span><span>🦷 Stomatologiya</span><span>🩺 Pediatriya</span><span>🔬 Labaratoriya</span><span>🦴 Ortopediya</span><span>💊 Endokrinologiya</span><span>🧬 Ginekologiya</span><span>🫁 Pulmonologiya</span>
+    </div>
+  </div>
+</div>
+ 
+<!-- ════════════════ CAROUSEL ════════════════ -->
+<section class="max-w-7xl mx-auto px-4 sm:px-6 py-14">
+  <div class="flex items-end justify-between mb-8">
+    <div>
+      <p class="text-gold-600 text-xs font-semibold tracking-widest uppercase mb-2">Tanlangan mutaxassislar</p>
+      <h2 class="font-serif text-3xl sm:text-4xl font-700 text-forest-900 leading-tight">Bizning yulduz<br/>shifokorlar</h2>
+    </div>
+    <div class="flex gap-2 pb-1">
+      <button onclick="carMove(-1)" class="w-10 h-10 rounded-xl border border-ink-200 flex items-center justify-center hover:bg-forest-50 hover:border-forest-300 transition text-forest-700">
+        <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><polyline points="10,4 4,8 10,12"/></svg>
+      </button>
+      <button onclick="carMove(1)" class="w-10 h-10 rounded-xl border border-ink-200 flex items-center justify-center hover:bg-forest-50 hover:border-forest-300 transition text-forest-700">
+        <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><polyline points="6,4 12,8 6,12"/></svg>
+      </button>
+    </div>
+  </div>
+ 
+  <div class="overflow-hidden rounded-3xl" id="car-wrap">
+    <div class="car-track" id="car-track"></div>
+  </div>
+  <div class="flex justify-center gap-2 mt-5" id="car-dots"></div>
+</section>
+ 
+<!-- ════════════════ FILTER + GRID ════════════════ -->
+<section id="shifokorlar" class="bg-ink-50/60 py-14">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6">
+    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8">
+      <div>
+        <p class="text-gold-600 text-xs font-semibold tracking-widest uppercase mb-1">Barcha mutaxassislar</p>
+        <h2 class="font-serif text-2xl sm:text-3xl font-700 text-forest-900">Shifokorlarni tanlang</h2>
+      </div>
+      <div class="relative w-full sm:w-auto">
+        <svg class="absolute left-3 top-1/2 -translate-y-1/2 text-ink-300" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="10" cy="10" r="6.5"/><line x1="15" y1="15" x2="19" y2="19"/></svg>
+        <input id="search" oninput="applyFilter()" type="text" placeholder="Qidirish…"
+          class="pl-9 pr-4 py-2.5 rounded-xl border border-ink-200 bg-white text-sm w-full sm:w-64 focus:outline-none focus:ring-2 focus:ring-forest-400"/>
+      </div>
+    </div>
+    <div class="flex flex-wrap gap-2 mb-8" id="chips"></div>
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5" id="doc-grid"></div>
+    <p id="no-res" class="hidden text-center text-ink-300 py-16 text-sm">Hech narsa topilmadi.</p>
+  </div>
+</section>
+ 
+<!-- ════════════════ XIZMATLAR ════════════════ -->
+<section id="xizmatlar" class="max-w-7xl mx-auto px-4 sm:px-6 py-16">
+  <div class="text-center mb-10">
+    <p class="text-gold-600 text-xs font-semibold tracking-widest uppercase mb-2">Nima qilamiz</p>
+    <h2 class="font-serif text-3xl sm:text-4xl font-700 text-forest-900">Asosiy xizmatlar</h2>
+  </div>
+  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+    <div class="bg-white rounded-2xl p-7 border border-ink-100 hover:border-forest-300 transition group">
+      <div class="w-12 h-12 rounded-2xl bg-forest-50 group-hover:bg-forest-100 flex items-center justify-center mb-5 transition">
+        <svg width="22" height="22" fill="none" stroke="#14532D" stroke-width="1.7" stroke-linecap="round" viewBox="0 0 24 24"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
+      </div>
+      <h3 class="font-serif font-600 text-xl text-forest-900 mb-2">Diagnostika</h3>
+      <p class="text-ink-500 text-sm leading-relaxed">MRI, KT, Rentgen, Ultratovush — zamonaviy uskunalar bilan aniq tashxis.</p>
+    </div>
+    <div class="bg-white rounded-2xl p-7 border border-ink-100 hover:border-forest-300 transition group">
+      <div class="w-12 h-12 rounded-2xl bg-gold-300/20 group-hover:bg-gold-300/30 flex items-center justify-center mb-5 transition">
+        <svg width="22" height="22" fill="none" stroke="#92650A" stroke-width="1.7" stroke-linecap="round" viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78L12 21.23l8.84-8.84a5.5 5.5 0 0 0 0-7.78z"/></svg>
+      </div>
+      <h3 class="font-serif font-600 text-xl text-forest-900 mb-2">Kardiologiya</h3>
+      <p class="text-ink-500 text-sm leading-relaxed">EKG, EXO-KG, Holter monitoring, yurak ritmi va qon bosimi davolash.</p>
+    </div>
+    <div class="bg-white rounded-2xl p-7 border border-ink-100 hover:border-forest-300 transition group">
+      <div class="w-12 h-12 rounded-2xl bg-blue-50 group-hover:bg-blue-100 flex items-center justify-center mb-5 transition">
+        <svg width="22" height="22" fill="none" stroke="#1E40AF" stroke-width="1.7" stroke-linecap="round" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>
+      </div>
+      <h3 class="font-serif font-600 text-xl text-forest-900 mb-2">Onlayn qabul</h3>
+      <p class="text-ink-500 text-sm leading-relaxed">Video konsultatsiya, elektron retsept va onlayn natijalar — uydan turib.</p>
+    </div>
+    <div class="bg-white rounded-2xl p-7 border border-ink-100 hover:border-forest-300 transition group">
+      <div class="w-12 h-12 rounded-2xl bg-pink-50 group-hover:bg-pink-100 flex items-center justify-center mb-5 transition">
+        <svg width="22" height="22" fill="none" stroke="#BE185D" stroke-width="1.7" stroke-linecap="round" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+      </div>
+      <h3 class="font-serif font-600 text-xl text-forest-900 mb-2">Pediatriya</h3>
+      <p class="text-ink-500 text-sm leading-relaxed">0 yoshdan 18 yoshgacha bolalar sog'lig'i, emlash va rivojlanish nazorati.</p>
+    </div>
+    <div class="bg-white rounded-2xl p-7 border border-ink-100 hover:border-forest-300 transition group">
+      <div class="w-12 h-12 rounded-2xl bg-purple-50 group-hover:bg-purple-100 flex items-center justify-center mb-5 transition">
+        <svg width="22" height="22" fill="none" stroke="#7C3AED" stroke-width="1.7" stroke-linecap="round" viewBox="0 0 24 24"><path d="M9 3H5a2 2 0 0 0-2 2v4m6-6h10a2 2 0 0 1 2 2v4M9 3v18m0 0h10a2 2 0 0 0 2-2V9M9 21H5a2 2 0 0 1-2-2V9m0 0h18"/></svg>
+      </div>
+      <h3 class="font-serif font-600 text-xl text-forest-900 mb-2">Labaratoriya</h3>
+      <p class="text-ink-500 text-sm leading-relaxed">500+ turdagi tahlil. Natijalar 2 soatda. Uyga chaqirib olish xizmati.</p>
+    </div>
+    <div class="bg-forest-900 rounded-2xl p-7 text-white">
+      <p class="text-gold-400 text-xs font-semibold tracking-widest uppercase mb-4">Favqulodda yordam</p>
+      <h3 class="font-serif font-600 text-xl mb-3">24 soat, 7 kun</h3>
+      <p class="text-white/60 text-sm leading-relaxed mb-6">Navbatchi shifokor doimo tayyor. Tez yordam brigadasi 15 daqiqada.</p>
+      <a href="tel:+998712000000" class="inline-flex items-center gap-2 bg-gold-500 hover:bg-gold-600 text-forest-900 font-bold px-5 py-2.5 rounded-xl text-sm transition">
+        📞 Qo'ng'iroq
+      </a>
+    </div>
+  </div>
+</section>
+ 
+<!-- ════════════════ TESTIMONIALS ════════════════ -->
+<section class="bg-forest-900 py-16 overflow-hidden">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 mb-8">
+    <p class="text-gold-400 text-xs font-semibold tracking-widest uppercase mb-2">Bemorlar fikri</p>
+    <h2 class="font-serif text-3xl sm:text-4xl font-700 text-white">Ularga ishonishadi</h2>
+  </div>
+  <div class="flex gap-5 px-6 overflow-x-auto pb-4" style="scrollbar-width:none">
+    <div class="bg-white/8 border border-white/10 rounded-2xl p-6 min-w-[280px] max-w-xs flex-shrink-0">
+      <div class="flex gap-0.5 mb-4"><svg width="13" height="13" viewBox="0 0 24 24" fill="#FBBF24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg><svg width="13" height="13" viewBox="0 0 24 24" fill="#FBBF24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg><svg width="13" height="13" viewBox="0 0 24 24" fill="#FBBF24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg><svg width="13" height="13" viewBox="0 0 24 24" fill="#FBBF24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg><svg width="13" height="13" viewBox="0 0 24 24" fill="#FBBF24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg></div>
+      <p class="text-white/75 text-sm leading-relaxed mb-5">"Dr. Yusupova menga juda tez va aniq tashxis qo'ydi. Boshqa klinikalarda yo'layin deganda, bu yerda birinchi kuniyoq hal bo'ldi."</p>
+      <div class="flex items-center gap-3"><img src="https://randomuser.me/api/portraits/women/33.jpg" class="w-9 h-9 rounded-full object-cover"/><div><p class="text-white text-sm font-medium">Mohira A.</p><p class="text-white/40 text-xs">Toshkent</p></div></div>
+    </div>
+    <div class="bg-white/8 border border-white/10 rounded-2xl p-6 min-w-[280px] max-w-xs flex-shrink-0">
+      <div class="flex gap-0.5 mb-4"><svg width="13" height="13" viewBox="0 0 24 24" fill="#FBBF24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg><svg width="13" height="13" viewBox="0 0 24 24" fill="#FBBF24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg><svg width="13" height="13" viewBox="0 0 24 24" fill="#FBBF24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg><svg width="13" height="13" viewBox="0 0 24 24" fill="#FBBF24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg><svg width="13" height="13" viewBox="0 0 24 24" fill="#FBBF24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg></div>
+      <p class="text-white/75 text-sm leading-relaxed mb-5">"Bolam uchun pediatr qidirayotgan edim. Dr. Toshmatova nafaqat shifokor, balki haqiqiy g'amxo'r — sabr-toqatli va bilimli."</p>
+      <div class="flex items-center gap-3"><img src="https://randomuser.me/api/portraits/men/41.jpg" class="w-9 h-9 rounded-full object-cover"/><div><p class="text-white text-sm font-medium">Jahongir T.</p><p class="text-white/40 text-xs">Samarqand</p></div></div>
+    </div>
+    <div class="bg-white/8 border border-white/10 rounded-2xl p-6 min-w-[280px] max-w-xs flex-shrink-0">
+      <div class="flex gap-0.5 mb-4"><svg width="13" height="13" viewBox="0 0 24 24" fill="#FBBF24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg><svg width="13" height="13" viewBox="0 0 24 24" fill="#FBBF24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg><svg width="13" height="13" viewBox="0 0 24 24" fill="#FBBF24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg><svg width="13" height="13" viewBox="0 0 24 24" fill="#FBBF24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg><svg width="13" height="13" viewBox="0 0 24 24" fill="#FBBF24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg></div>
+      <p class="text-white/75 text-sm leading-relaxed mb-5">"Ko'z operatsiyamdan keyingi natija hayratlanarli. Dr. Raxmatullayev — haqiqiy professional. Qayta ko'rib ketaman!"</p>
+      <div class="flex items-center gap-3"><img src="https://randomuser.me/api/portraits/women/57.jpg" class="w-9 h-9 rounded-full object-cover"/><div><p class="text-white text-sm font-medium">Dilnoza X.</p><p class="text-white/40 text-xs">Toshkent</p></div></div>
+    </div>
+    <div class="bg-gold-500/15 border border-gold-500/30 rounded-2xl p-6 min-w-[280px] max-w-xs flex-shrink-0">
+      <div class="flex gap-0.5 mb-4"><svg width="13" height="13" viewBox="0 0 24 24" fill="#FBBF24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg><svg width="13" height="13" viewBox="0 0 24 24" fill="#FBBF24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg><svg width="13" height="13" viewBox="0 0 24 24" fill="#FBBF24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg><svg width="13" height="13" viewBox="0 0 24 24" fill="#FBBF24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg><svg width="13" height="13" viewBox="0 0 24 24" fill="#FBBF24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg></div>
+      <p class="text-white/75 text-sm leading-relaxed mb-5">"Kardiologiya bo'limida juda tez va professional xizmat. Qulay joylashuv, toza muhit. Hammaga tavsiya qilaman!"</p>
+      <div class="flex items-center gap-3"><img src="https://randomuser.me/api/portraits/men/22.jpg" class="w-9 h-9 rounded-full object-cover"/><div><p class="text-white text-sm font-medium">Akbar M.</p><p class="text-white/40 text-xs">Farg'ona</p></div></div>
+    </div>
+  </div>
+</section>
+ 
+<!-- ════════════════ FOOTER ════════════════ -->
+<footer id="boglanish" class="bg-ink-900 text-white py-12">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6">
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 pb-10 border-b border-white/10">
+      <div>
+        <div class="flex items-center gap-2 mb-4">
+          <div class="w-9 h-9 rounded-xl bg-forest-700 flex items-center justify-center">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#D4A017" stroke-width="2.2" stroke-linecap="round"><path d="M12 2a10 10 0 1 0 0 20A10 10 0 0 0 12 2z"/><path d="M12 8v8M8 12h8"/></svg>
+          </div>
+          <span class="font-serif font-700 text-lg">MedStar</span>
+        </div>
+        <p class="text-white/50 text-sm leading-relaxed">Sog'liqingiz — bizning asosiy mas'uliyatimiz.</p>
+      </div>
+      <div>
+        <h4 class="font-semibold text-sm mb-4">Navigatsiya</h4>
+        <ul class="space-y-2 text-white/50 text-sm">
+          <li><a href="index.html" class="hover:text-white transition">Bosh sahifa</a></li>
+          <li><a href="doctors.html" class="hover:text-white transition">Shifokorlar</a></li>
+          <li><a href="services.html" class="hover:text-white transition">Xizmatlar</a></li>
+          <li><a href="contact.html" class="hover:text-white transition">Bog'lanish</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4 class="font-semibold text-sm mb-4">Manzil</h4>
+        <ul class="space-y-2 text-white/50 text-sm">
+          <li>📍 Toshkent, Chilonzor ko'chasi 42</li>
+          <li>📞 <a href="tel:+998712000000" class="hover:text-white transition">+998 71 200-00-00</a></li>
+          <li>✉️ info@medstar.uz</li>
+          <li>🌐 www.medstar.uz</li>
+        </ul>
+      </div>
+      <div>
+        <h4 class="font-semibold text-sm mb-4">Ish vaqti</h4>
+        <ul class="space-y-2 text-white/50 text-sm">
+          <li>Du–Ju: 08:00 – 20:00</li>
+          <li>Shanba: 09:00 – 17:00</li>
+          <li>Yakshanba: 10:00 – 15:00</li>
+          <li class="text-emerald-400 font-medium">🚑 Favqulodda: 24/7</li>
+        </ul>
+      </div>
+    </div>
+    <div class="pt-6 text-center text-white/30 text-xs">© 2025 MedStar Klinikasi. Barcha huquqlar himoyalangan.</div>
+  </div>
+</footer>
+ 
+<!-- ════════════════ DOCTOR MODAL ════════════════ -->
+<div id="doc-overlay" class="fixed inset-0 z-50 hidden" style="background:rgba(17,27,20,.65);backdrop-filter:blur(8px)" onclick="closeDoc(event)">
+  <div class="flex items-center justify-center min-h-screen p-3">
+    <div id="doc-box" class="chat-panel bg-white rounded-3xl w-full max-w-lg max-h-[90vh] overflow-y-auto" onclick="event.stopPropagation()">
+      <div class="relative">
+        <div id="doc-banner" class="h-32 rounded-t-3xl bg-forest-800"></div>
+        <button onclick="closeDoc()" class="absolute top-3 right-3 w-8 h-8 rounded-full bg-black/20 hover:bg-black/40 flex items-center justify-center text-white transition">
+          <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="2" y1="2" x2="11" y2="11"/><line x1="11" y1="2" x2="2" y2="11"/></svg>
+        </button>
+        <img id="doc-img" class="absolute left-6 -bottom-12 w-24 h-24 rounded-2xl border-4 border-white object-cover shadow-lg"/>
+        <div class="absolute right-6 -bottom-4 flex gap-0.5" id="doc-stars"></div>
+      </div>
+      <div class="pt-16 px-6 pb-6">
+        <h2 id="doc-name" class="font-serif text-2xl font-700 text-forest-900"></h2>
+        <p id="doc-spec" class="text-gold-600 text-sm font-semibold mt-0.5 mb-5"></p>
+        <div class="grid grid-cols-3 gap-3 mb-6">
+          <div class="bg-forest-50 rounded-xl p-3 text-center"><p id="doc-exp" class="font-serif text-xl font-700 text-forest-800"></p><p class="text-xs text-ink-400 mt-0.5">Yil tajriba</p></div>
+          <div class="bg-gold-300/20 rounded-xl p-3 text-center"><p id="doc-pat" class="font-serif text-xl font-700 text-gold-700"></p><p class="text-xs text-ink-400 mt-0.5">Bemor</p></div>
+          <div class="bg-ink-50 rounded-xl p-3 text-center"><p id="doc-rev" class="font-serif text-xl font-700 text-ink-700"></p><p class="text-xs text-ink-400 mt-0.5">Sharh</p></div>
+        </div>
+        <p class="text-xs font-semibold text-ink-400 uppercase tracking-widest mb-2">Haqida</p>
+        <p id="doc-bio" class="text-ink-500 text-sm leading-relaxed mb-5"></p>
+        <p class="text-xs font-semibold text-ink-400 uppercase tracking-widest mb-3">Jadval</p>
+        <div id="doc-sched" class="flex flex-wrap gap-2 mb-5"></div>
+        <p class="text-xs font-semibold text-ink-400 uppercase tracking-widest mb-3">Xizmatlar</p>
+        <div id="doc-serv" class="flex flex-wrap gap-2 mb-6"></div>
+        <div class="grid grid-cols-2 gap-3">
+          <a id="doc-tel" href="#" class="flex items-center justify-center gap-2 border border-forest-300 text-forest-800 font-semibold text-sm py-3 rounded-xl hover:bg-forest-50 transition">📞 Qo'ng'iroq</a>
+          <button onclick="openAppt()" class="bg-forest-900 hover:bg-forest-800 text-white font-semibold text-sm py-3 rounded-xl transition">Qabul olish</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+ 
+<!-- ════════════════ APPT MODAL ════════════════ -->
+<div id="appt-overlay" class="fixed inset-0 z-50 hidden" style="background:rgba(17,27,20,.65);backdrop-filter:blur(8px)" onclick="closeApptEv(event)">
+  <div class="flex items-center justify-center min-h-screen p-3">
+    <div class="chat-panel bg-white rounded-3xl w-full max-w-sm p-7" onclick="event.stopPropagation()">
+      <div class="flex items-center justify-between mb-6">
+        <h2 class="font-serif text-2xl font-700 text-forest-900">Qabul olish</h2>
+        <button onclick="closeAppt()" class="w-8 h-8 rounded-xl hover:bg-ink-50 flex items-center justify-center text-ink-400 transition">
+          <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="2" y1="2" x2="11" y2="11"/><line x1="11" y1="2" x2="2" y2="11"/></svg>
+        </button>
+      </div>
+      <div class="space-y-4">
+        <div><label class="block text-xs font-semibold text-ink-400 mb-1.5">Ism Familiya</label><input type="text" placeholder="Ahmadov Jasur" class="w-full border border-ink-200 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-forest-400"/></div>
+        <div><label class="block text-xs font-semibold text-ink-400 mb-1.5">Telefon</label><input type="tel" placeholder="+998 90 000-00-00" class="w-full border border-ink-200 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-forest-400"/></div>
+        <div><label class="block text-xs font-semibold text-ink-400 mb-1.5">Bo'lim</label>
+          <select class="w-full border border-ink-200 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-forest-400 bg-white">
+            <option>Kardiologiya</option><option>Nevrologiya</option><option>Oftalmologiya</option><option>Pediatriya</option><option>Ortopediya</option><option>Ginekologiya</option><option>Dermatologiya</option>
+          </select>
+        </div>
+        <div><label class="block text-xs font-semibold text-ink-400 mb-1.5">Sana</label><input type="date" class="w-full border border-ink-200 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-forest-400"/></div>
+        <div><label class="block text-xs font-semibold text-ink-400 mb-1.5">Vaqt</label>
+          <select class="w-full border border-ink-200 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-forest-400 bg-white">
+            <option>09:00</option><option>10:00</option><option>11:00</option><option>13:00</option><option>14:00</option><option>15:00</option><option>16:00</option>
+          </select>
+        </div>
+      </div>
+      <button onclick="submitAppt()" class="mt-6 w-full bg-forest-900 hover:bg-forest-800 text-white font-bold py-3 rounded-xl transition text-sm">
+        Yuborish ✓
+      </button>
+    </div>
+  </div>
+</div>
+ 
+<!-- ════════════════ LOADING ════════════════ -->
+<div id="loading" class="fixed inset-0 z-50 hidden items-center justify-center" style="background:rgba(250,252,248,.88);backdrop-filter:blur(8px)">
+  <div class="text-center">
+    <div class="relative w-16 h-16 mx-auto mb-4">
+      <svg class="animate-spin w-16 h-16" viewBox="0 0 64 64" fill="none"><circle cx="32" cy="32" r="28" stroke="#BBF7D0" stroke-width="5"/><path d="M32 4a28 28 0 0 1 28 28" stroke="#14532D" stroke-width="5" stroke-linecap="round"/></svg>
+      <div class="absolute inset-0 flex items-center justify-center">
+        <div class="w-7 h-7 rounded-full bg-forest-900 flex items-center justify-center">
+          <svg width="13" height="13" fill="none" stroke="#D4A017" stroke-width="2.5" stroke-linecap="round"><path d="M6.5 1v11M1 6.5h11"/></svg>
+        </div>
+      </div>
+    </div>
+    <p class="text-forest-900 font-semibold text-sm">Yuklanmoqda…</p>
+  </div>
+</div>
+ 
+<!-- ════════════════ TOAST ════════════════ -->
+<div id="toast" class="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 hidden">
+  <div class="bg-forest-900 text-white px-6 py-3 rounded-2xl shadow-xl flex items-center gap-3 text-sm font-semibold">
+    <svg width="16" height="16" fill="none" stroke="#22C55E" stroke-width="2.5" stroke-linecap="round"><polyline points="2,8 6,13 14,3"/></svg>
+    Muvaffaqiyatli yuborildi!
+  </div>
+</div>
+ 
+<!-- ════════════════ AI CHAT BUTTON ════════════════ -->
+<button id="chat-btn" onclick="toggleChat()" class="fixed bottom-6 right-5 sm:right-7 z-40 w-14 h-14 rounded-full bg-forest-900 hover:bg-forest-800 shadow-xl flex items-center justify-center transition">
+  <svg id="chat-icon" width="22" height="22" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+  <svg id="chat-close" width="18" height="18" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" class="hidden" viewBox="0 0 24 24"><line x1="4" y1="4" x2="20" y2="20"/><line x1="20" y1="4" x2="4" y2="20"/></svg>
+  <span class="absolute -top-1 -right-1 w-4 h-4 rounded-full bg-gold-500 text-[9px] font-bold text-forest-900 flex items-center justify-center" id="chat-notif">AI</span>
+</button>
+ 
+<!-- ════════════════ AI CHAT PANEL ════════════════ -->
+<div id="chat-panel" class="fixed bottom-24 right-5 sm:right-7 z-40 hidden w-[calc(100vw-2.5rem)] sm:w-96 max-h-[70vh] flex flex-col rounded-3xl overflow-hidden shadow-2xl border border-forest-200" style="box-shadow:0 32px 80px rgba(20,83,45,.22)">
+  <div class="bg-forest-900 px-5 py-4 flex items-center gap-3 flex-shrink-0">
+    <div class="w-9 h-9 rounded-xl bg-gold-500 flex items-center justify-center flex-shrink-0">
+      <svg width="18" height="18" fill="none" stroke="#052E16" stroke-width="2.2" stroke-linecap="round" viewBox="0 0 24 24"><path d="M12 2a10 10 0 1 0 0 20A10 10 0 0 0 12 2z"/><path d="M12 8v8M8 12h8"/></svg>
+    </div>
+    <div class="flex-1">
+      <p class="text-white font-semibold text-sm leading-none">MedStar AI Yordamchi</p>
+      <p class="text-white/50 text-xs mt-0.5 flex items-center gap-1"><span class="w-1.5 h-1.5 rounded-full bg-emerald-400 pdot"></span>Onlayn</p>
+    </div>
+    <span class="text-[9px] font-bold bg-gold-500 text-forest-900 px-2 py-0.5 rounded-full uppercase tracking-wide">AI</span>
+  </div>
+ 
+  <div id="chat-msgs" class="flex-1 overflow-y-auto bg-white p-4 space-y-3" style="max-height:340px">
+    <div class="flex gap-2.5">
+      <div class="w-7 h-7 rounded-full bg-forest-100 flex items-center justify-center flex-shrink-0 mt-0.5">
+        <svg width="12" height="12" fill="none" stroke="#14532D" stroke-width="2.2" stroke-linecap="round" viewBox="0 0 24 24"><path d="M12 2a10 10 0 1 0 0 20A10 10 0 0 0 12 2z"/><path d="M12 8v8M8 12h8"/></svg>
+      </div>
+      <div class="bg-ink-50 rounded-2xl rounded-tl-sm px-4 py-3 max-w-[85%]">
+        <p class="text-ink-700 text-sm leading-relaxed">Assalomu alaykum! 👋 Men MedStar klinikasi AI yordamchisiman. Shifokorlar, xizmatlar, qabul vaqtlari yoki narxlar haqida savol bering!</p>
+        <div class="flex flex-wrap gap-1.5 mt-3">
+          <button onclick="quickSend('Shifokorlar haqida')" class="text-xs bg-forest-50 hover:bg-forest-100 text-forest-800 px-2.5 py-1 rounded-lg border border-forest-200 transition">Shifokorlar</button>
+          <button onclick="quickSend('Narxlar qancha?')" class="text-xs bg-forest-50 hover:bg-forest-100 text-forest-800 px-2.5 py-1 rounded-lg border border-forest-200 transition">Narxlar</button>
+          <button onclick="quickSend('Qabul vaqtlari?')" class="text-xs bg-forest-50 hover:bg-forest-100 text-forest-800 px-2.5 py-1 rounded-lg border border-forest-200 transition">Ish vaqti</button>
+          <button onclick="quickSend('Manzil qayer?')" class="text-xs bg-forest-50 hover:bg-forest-100 text-forest-800 px-2.5 py-1 rounded-lg border border-forest-200 transition">Manzil</button>
+        </div>
+      </div>
+    </div>
+  </div>
+ 
+  <div class="bg-white border-t border-ink-100 p-3 flex gap-2 flex-shrink-0">
+    <input id="chat-input" type="text" placeholder="Savolingizni yozing…" onkeydown="if(event.key==='Enter')sendChat()"
+      class="flex-1 border border-ink-200 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-forest-400 bg-ink-50"/>
+    <button onclick="sendChat()" class="w-10 h-10 rounded-xl bg-forest-900 hover:bg-forest-800 flex items-center justify-center transition flex-shrink-0">
+      <svg width="16" height="16" fill="none" stroke="white" stroke-width="2.2" stroke-linecap="round" viewBox="0 0 24 24"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+    </button>
+  </div>
+</div>
+ 
+<!-- ════════════════ SCRIPTS ════════════════ -->
+<script>
+/* ─── MOBILE MENU ─── */
+function toggleMenu(){
+  const menu=document.getElementById('mobile-menu');
+  const ham=document.getElementById('hamburger');
+  const isOpen=menu.classList.contains('open');
+  if(isOpen){
+    menu.classList.remove('open');
+    ham.classList.remove('active');
+    document.body.style.overflow='';
+  } else {
+    menu.classList.add('open');
+    ham.classList.add('active');
+  }
+}
+function closeMenu(){
+  document.getElementById('mobile-menu').classList.remove('open');
+  document.getElementById('hamburger').classList.remove('active');
+  document.body.style.overflow='';
+}
+// Close menu on outside click
+document.addEventListener('click',function(e){
+  const header=document.querySelector('header');
+  if(!header.contains(e.target)){closeMenu();}
+});
+ 
+/* ─── DATA ─── */
+const DOCS=[
+  {id:1,name:"Dr. Nilufar Yusupova",spec:"Kardiologiya",img:"https://randomuser.me/api/portraits/women/44.jpg",exp:16,patients:"3.2K",reviews:214,rating:4.9,bio:"Yurak-qon tomir kasalliklari bo'yicha yetakchi mutaxassis. Evropada malaka oshirgan, 50+ ilmiy maqola muallifi.",schedule:["Du–Ju 09:00–17:00","Shan 09:00–13:00"],services:["EKG","EXO-KG","Holter","Konsultatsiya","Dori rejalash"],phone:"+998712000001",featured:true,grad:"from-rose-700 to-pink-900"},
+  {id:2,name:"Dr. Jasur Karimov",spec:"Nevrologiya",img:"https://randomuser.me/api/portraits/men/32.jpg",exp:12,patients:"2.8K",reviews:178,rating:4.8,bio:"Miya va asab tizimi kasalliklarini davolashda yirik tajribaga ega. Xalqaro sertifikatlarga ega mutaxassis.",schedule:["Du–Pa 10:00–18:00","Jum 10:00–15:00"],services:["MRI tahlil","EEG","Refleksoterapiya","Konsultatsiya"],phone:"+998712000002",featured:true,grad:"from-blue-700 to-indigo-900"},
+  {id:3,name:"Dr. Malika Toshmatova",spec:"Pediatriya",img:"https://randomuser.me/api/portraits/women/65.jpg",exp:9,patients:"4.1K",reviews:302,rating:4.9,bio:"Bolalar sog'lig'i bo'yicha ixtisoslashgan. Yangi tug'ilganlardan tortib o'smirlar sog'lig'igacha.",schedule:["Du–Ju 08:00–16:00","Shan 09:00–12:00"],services:["Profilaktik ko'rik","Emlash","Rivojlanish kuzatuvi"],phone:"+998712000003",featured:true,grad:"from-teal-700 to-emerald-900"},
+  {id:4,name:"Dr. Sherzod Raxmatullayev",spec:"Oftalmologiya",img:"https://randomuser.me/api/portraits/men/54.jpg",exp:20,patients:"5.5K",reviews:440,rating:5.0,bio:"Ko'z kasalliklari va ko'rish korreksiyasi bo'yicha 20 yillik tajriba. Lazer operatsiyalar ustasi.",schedule:["Du–Ju 09:00–17:00"],services:["Ko'rish tekshiruvi","Lazer davolash","Katarakta","Glaukoma"],phone:"+998712000004",featured:true,grad:"from-violet-700 to-purple-900"},
+  {id:5,name:"Dr. Dilnoza Xasanova",spec:"Dermatologiya",img:"https://randomuser.me/api/portraits/women/28.jpg",exp:8,patients:"2.3K",reviews:155,rating:4.7,bio:"Teri kasalliklari va kosmetologiya bo'yicha ixtisoslashgan mutaxassis.",schedule:["Se–Pa 10:00–18:00","Shan 10:00–14:00"],services:["Teri tekshiruvi","Akne davolash","Lazer epiliatsiya","Botoks"],phone:"+998712000005",featured:false,grad:"from-amber-600 to-orange-900"},
+  {id:6,name:"Dr. Bobur Mirzayev",spec:"Ortopediya",img:"https://randomuser.me/api/portraits/men/67.jpg",exp:14,patients:"3.7K",reviews:263,rating:4.8,bio:"Suyak va bo'g'im kasalliklarini davolashda yetakchi. Artroskopik operatsiyalar mutaxassisi.",schedule:["Du–Pa 09:00–17:00"],services:["X-ray","MRI ko'rish","Artroskopiya","Fizioterapiya"],phone:"+998712000006",featured:false,grad:"from-slate-600 to-slate-900"},
+  {id:7,name:"Dr. Zulfiya Normatova",spec:"Ginekologiya",img:"https://randomuser.me/api/portraits/women/72.jpg",exp:11,patients:"4.8K",reviews:387,rating:4.9,bio:"Ayollar salomatligi va reproduktiv tibbiyot bo'yicha ixtisoslashgan.",schedule:["Du–Ju 08:00–16:00","Shan 09:00–13:00"],services:["USI tekshiruvi","Kolposkopiya","Homiladorlik kuzatuvi"],phone:"+998712000007",featured:false,grad:"from-pink-600 to-rose-900"},
+  {id:8,name:"Dr. Alisher Tursunov",spec:"Gastroenterologiya",img:"https://randomuser.me/api/portraits/men/41.jpg",exp:7,patients:"1.9K",reviews:124,rating:4.6,bio:"Hazm yo'li kasalliklari bo'yicha mutaxassis. Endoskopik tekshiruvlar ustasi.",schedule:["Du–Ju 10:00–18:00"],services:["Gastroskopiya","Kolonoskopiya","UZI"],phone:"+998712000008",featured:false,grad:"from-cyan-700 to-teal-900"},
+  {id:9,name:"Dr. Maftuna Qodirova",spec:"Endokrinologiya",img:"https://randomuser.me/api/portraits/women/52.jpg",exp:10,patients:"2.6K",reviews:198,rating:4.8,bio:"Qandli diabet, qalqonsimon bez kasalliklari bo'yicha ixtisoslashgan.",schedule:["Du–Pa 09:00–17:00"],services:["Qon tahlili","Insulin davolash","Hormon tekshiruvi"],phone:"+998712000009",featured:false,grad:"from-green-700 to-emerald-900"},
+  {id:10,name:"Dr. Timur Yo'ldoshev",spec:"Kardiologiya",img:"https://randomuser.me/api/portraits/men/23.jpg",exp:6,patients:"1.4K",reviews:89,rating:4.7,bio:"Yurak ritmi buzilishi va gipertenziya davolashga ixtisoslashgan yosh kardiolog.",schedule:["Du–Ju 11:00–19:00"],services:["EKG","Holter","Stress test"],phone:"+998712000010",featured:false,grad:"from-red-700 to-rose-900"},
+  {id:11,name:"Dr. Shahlo Usmonova",spec:"Psixiatriya",img:"https://randomuser.me/api/portraits/women/38.jpg",exp:13,patients:"3.0K",reviews:221,rating:4.9,bio:"Ruhiy salomatlik va psixologik yordam bo'yicha 13 yillik tajribali mutaxassis.",schedule:["Du–Pa 10:00–18:00"],services:["Psixoterapiya","CBT sessiya","Stress boshqaruvi"],phone:"+998712000011",featured:false,grad:"from-violet-600 to-purple-900"},
+  {id:12,name:"Dr. Ravshan Ergashev",spec:"Urologiya",img:"https://randomuser.me/api/portraits/men/77.jpg",exp:18,patients:"4.2K",reviews:315,rating:4.8,bio:"Siydik yo'llari kasalliklari va andrologiya bo'yicha yetakchi mutaxassis.",schedule:["Du–Ju 09:00–17:00"],services:["Siydik tahlili","UZI","Litotripsi","Laparoskopi"],phone:"+998712000012",featured:false,grad:"from-sky-700 to-blue-900"},
+];
+const SPECS=["Barchasi",...new Set(DOCS.map(d=>d.spec))];
+let activeSp="Barchasi";
+ 
+function starHTML(r,size=11){
+  const f=Math.floor(r);let h='';
+  for(let i=0;i<f;i++) h+=`<svg width="${size}" height="${size}" viewBox="0 0 24 24" fill="#D4A017"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>`;
+  return h;
+}
+ 
+function buildChips(){
+  const bar=document.getElementById('chips');bar.innerHTML='';
+  SPECS.forEach(s=>{
+    const b=document.createElement('button');
+    const active=s===activeSp;
+    b.className=`px-4 py-1.5 rounded-full text-sm font-medium border transition ${active?'bg-forest-900 text-white border-forest-900':'bg-white text-ink-500 border-ink-200 hover:border-forest-400 hover:text-forest-800'}`;
+    b.textContent=s;b.onclick=()=>{activeSp=s;buildChips();applyFilter();};
+    bar.appendChild(b);
+  });
+}
+ 
+function applyFilter(){
+  const q=document.getElementById('search').value.toLowerCase();
+  const list=DOCS.filter(d=>(activeSp==='Barchasi'||d.spec===activeSp)&&(!q||d.name.toLowerCase().includes(q)||d.spec.toLowerCase().includes(q)));
+  renderGrid(list);
+}
+ 
+function renderGrid(list){
+  const g=document.getElementById('doc-grid'),no=document.getElementById('no-res');
+  g.innerHTML='';
+  if(!list.length){no.classList.remove('hidden');return;}
+  no.classList.add('hidden');
+  list.forEach(d=>{
+    const el=document.createElement('div');
+    el.className='doc-card bg-white rounded-2xl overflow-hidden cursor-pointer border border-ink-100';
+    el.onclick=()=>openDoc(d.id);
+    el.innerHTML=`
+      <div class="relative">
+        <div class="h-28 bg-gradient-to-br ${d.grad}"></div>
+        <img src="${d.img}" class="absolute left-1/2 -translate-x-1/2 -bottom-9 w-[72px] h-[72px] rounded-2xl border-4 border-white object-cover shadow-md"/>
+        <div class="doc-overlay absolute inset-0 bg-black/30 flex items-center justify-center">
+          <span class="bg-white/90 text-forest-900 text-xs font-bold px-4 py-2 rounded-xl">Ko'proq →</span>
+        </div>
+      </div>
+      <div class="pt-12 pb-5 px-4 text-center">
+        <span class="inline-block bg-forest-50 text-forest-800 text-[11px] font-semibold px-2.5 py-0.5 rounded-full border border-forest-200 mb-2">${d.spec}</span>
+        <h3 class="font-serif font-600 text-base text-forest-900 leading-snug">${d.name}</h3>
+        <div class="flex justify-center gap-0.5 mt-1.5 mb-3">${starHTML(d.rating)}<span class="text-ink-400 text-xs ml-1">(${d.reviews})</span></div>
+        <div class="flex justify-center gap-5 text-xs text-ink-400 border-t border-ink-100 pt-3">
+          <span class="font-medium">${d.exp} yil</span>
+          <span class="text-ink-200">|</span>
+          <span class="font-medium">${d.patients} bemor</span>
+        </div>
+      </div>`;
+    g.appendChild(el);
+  });
+}
+ 
+/* ─── CAROUSEL ─── */
+const feat=DOCS.filter(d=>d.featured);
+let cIdx=0,cTmr;
+function buildCar(){
+  const t=document.getElementById('car-track'),dots=document.getElementById('car-dots');
+  t.innerHTML='';dots.innerHTML='';
+  feat.forEach((d,i)=>{
+    const sl=document.createElement('div');sl.className='car-slide';
+    sl.innerHTML=`
+      <div class="bg-gradient-to-br ${d.grad} rounded-3xl overflow-hidden cursor-pointer" onclick="openDoc(${d.id})" style="min-height:260px">
+        <div class="flex flex-col sm:flex-row items-center sm:items-end gap-6 p-8 h-full" style="min-height:260px">
+          <img src="${d.img}" class="w-28 h-28 sm:w-36 sm:h-36 rounded-2xl border-4 border-white/25 object-cover shadow-xl flex-shrink-0"/>
+          <div class="text-white text-center sm:text-left flex-1 pb-2">
+            <span class="inline-block bg-white/15 border border-white/25 text-xs font-semibold px-3 py-1 rounded-full mb-3">${d.spec}</span>
+            <h3 class="font-serif text-2xl sm:text-3xl font-700 leading-tight">${d.name}</h3>
+            <p class="text-white/65 text-sm mt-1">${d.exp} yillik tajriba · ${d.patients} bemor</p>
+            <div class="flex items-center justify-center sm:justify-start gap-0.5 mt-2">${starHTML(d.rating,13)}<span class="text-white/80 text-sm font-semibold ml-1">${d.rating}</span></div>
+            <button class="mt-5 bg-white/15 hover:bg-white/25 border border-white/30 text-white text-sm font-semibold px-6 py-2.5 rounded-xl transition">Batafsil →</button>
+          </div>
+        </div>
+      </div>`;
+    t.appendChild(sl);
+    const dot=document.createElement('button');
+    dot.className=`h-2 rounded-full transition-all ${i===0?'w-6 bg-forest-700':'w-2 bg-forest-200'}`;
+    dot.onclick=()=>goSlide(i);dots.appendChild(dot);
+  });
+}
+function goSlide(i){
+  cIdx=i;
+  document.getElementById('car-track').style.transform=`translateX(-${i*100}%)`;
+  document.querySelectorAll('#car-dots button').forEach((d,j)=>{d.className=`h-2 rounded-full transition-all ${j===i?'w-6 bg-forest-700':'w-2 bg-forest-200'}`;});
+  clearInterval(cTmr);cTmr=setInterval(()=>carMove(1),4500);
+}
+function carMove(dir){goSlide((cIdx+dir+feat.length)%feat.length);}
+ 
+/* ─── DOCTOR MODAL ─── */
+function openDoc(id){
+  closeMenu();
+  const ld=document.getElementById('loading');
+  ld.style.display='flex';
+  setTimeout(()=>{
+    ld.style.display='none';
+    const d=DOCS.find(x=>x.id===id);if(!d)return;
+    document.getElementById('doc-img').src=d.img;
+    document.getElementById('doc-name').textContent=d.name;
+    document.getElementById('doc-spec').textContent=d.spec;
+    document.getElementById('doc-exp').textContent=d.exp;
+    document.getElementById('doc-pat').textContent=d.patients;
+    document.getElementById('doc-rev').textContent=d.reviews;
+    document.getElementById('doc-bio').textContent=d.bio;
+    document.getElementById('doc-banner').className=`h-32 rounded-t-3xl bg-gradient-to-br ${d.grad}`;
+    document.getElementById('doc-tel').href=`tel:${d.phone}`;
+    document.getElementById('doc-stars').innerHTML=starHTML(d.rating,13)+`<span class="text-ink-600 text-xs font-semibold ml-1">${d.rating}</span>`;
+    document.getElementById('doc-sched').innerHTML=d.schedule.map(s=>`<span class="bg-forest-50 text-forest-800 text-xs font-medium px-3 py-1.5 rounded-lg border border-forest-200">${s}</span>`).join('');
+    document.getElementById('doc-serv').innerHTML=d.services.map(s=>`<span class="bg-ink-50 text-ink-600 text-xs px-3 py-1.5 rounded-lg border border-ink-200">${s}</span>`).join('');
+    document.getElementById('doc-overlay').style.display='block';
+    document.body.style.overflow='hidden';
+  },600);
+}
+function closeDoc(e){
+  const ov=document.getElementById('doc-overlay');
+  if(!e||e.target===ov){ov.style.display='none';document.body.style.overflow='';}
+}
+ 
+/* ─── APPT ─── */
+function openAppt(){document.getElementById('appt-overlay').style.display='block';document.getElementById('doc-overlay').style.display='none';document.body.style.overflow='hidden';}
+function closeAppt(){document.getElementById('appt-overlay').style.display='none';document.body.style.overflow='';}
+function closeApptEv(e){if(e.target===document.getElementById('appt-overlay'))closeAppt();}
+function submitAppt(){
+  closeAppt();
+  const t=document.getElementById('toast');t.style.display='block';
+  setTimeout(()=>t.style.display='none',3000);
+}
+ 
+/* ─── CHAT ─── */
+let chatHistory=[];
+let chatOpen=false;
+const HOSPITAL_CONTEXT=`Siz MedStar klinikasi AI yordamchisisiz. Faqat o'zbek tilida javob bering. Qisqa, aniq va do'stona bo'ling.
+ 
+KLINIKA MA'LUMOTLARI:
+Nomi: MedStar Klinikasi
+Manzil: Toshkent shahri, Chilonzor ko'chasi 42
+Telefon: +998 71 200-00-00
+Email: info@medstar.uz
+ 
+ISH VAQTI:
+- Dushanba-Juma: 08:00–20:00
+- Shanba: 09:00–17:00
+- Yakshanba: 10:00–15:00
+- Favqulodda/Tez yordam: 24/7
+ 
+BO'LIMLAR: Kardiologiya, Nevrologiya, Pediatriya, Oftalmologiya, Dermatologiya, Ortopediya, Ginekologiya, Gastroenterologiya, Endokrinologiya, Psixiatriya, Urologiya, Stomatologiya, Labaratoriya.
+ 
+NARXLAR (taxminiy):
+- Konsultatsiya: 100,000–250,000 so'm
+- EKG: 80,000 so'm
+- Qon tahlili: 60,000 so'm
+- USI: 150,000–300,000 so'm
+- MRI: 600,000–1,200,000 so'm
+ 
+IMTIYOZLAR: Keksalar (65+): 20% chegirma. Bolalar (0-14): 15% chegirma.
+ 
+Agar savolga javob bilmasangiz, +998 71 200-00-00 ga murojaat qilishni tavsiya eting.`;
+ 
+function toggleChat(){
+  chatOpen=!chatOpen;
+  const panel=document.getElementById('chat-panel');
+  const icon=document.getElementById('chat-icon');
+  const closeIco=document.getElementById('chat-close');
+  const notif=document.getElementById('chat-notif');
+  if(chatOpen){
+    panel.classList.remove('hidden');panel.classList.add('flex');
+    icon.classList.add('hidden');closeIco.classList.remove('hidden');
+    notif.style.display='none';
+    setTimeout(()=>document.getElementById('chat-input').focus(),100);
+  } else {
+    panel.classList.add('hidden');panel.classList.remove('flex');
+    icon.classList.remove('hidden');closeIco.classList.add('hidden');
+  }
+}
+ 
+function quickSend(txt){
+  document.getElementById('chat-input').value=txt;
+  sendChat();
+}
+ 
+async function sendChat(){
+  const inp=document.getElementById('chat-input');
+  const msg=inp.value.trim();
+  if(!msg)return;
+  inp.value='';
+  addMsg(msg,'user');
+  chatHistory.push({role:'user',content:msg});
+  showTyping();
+  try{
+    const res=await fetch('https://api.anthropic.com/v1/messages',{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({
+        model:'claude-sonnet-4-6',
+        max_tokens:1000,
+        system:HOSPITAL_CONTEXT,
+        messages:chatHistory
+      })
+    });
+    const data=await res.json();
+    removeTyping();
+    const reply=data.content?.[0]?.text||'Kechirasiz, xatolik yuz berdi.';
+    chatHistory.push({role:'assistant',content:reply});
+    addMsg(reply,'ai');
+  }catch(e){
+    removeTyping();
+    addMsg("Tarmoqda xatolik. Iltimos, +998 71 200-00-00 ga qo'ng'iroq qiling.",'ai');
+  }
+}
+ 
+function addMsg(text,role){
+  const c=document.getElementById('chat-msgs');
+  const wrap=document.createElement('div');
+  wrap.className=`flex gap-2.5 ${role==='user'?'justify-end':''}`;
+  if(role==='ai'){
+    wrap.innerHTML=`
+      <div class="w-7 h-7 rounded-full bg-forest-100 flex items-center justify-center flex-shrink-0 mt-0.5">
+        <svg width="12" height="12" fill="none" stroke="#14532D" stroke-width="2.2" stroke-linecap="round" viewBox="0 0 24 24"><path d="M12 2a10 10 0 1 0 0 20A10 10 0 0 0 12 2z"/><path d="M12 8v8M8 12h8"/></svg>
+      </div>
+      <div class="bg-ink-50 rounded-2xl rounded-tl-sm px-4 py-3 max-w-[85%]">
+        <p class="text-ink-700 text-sm leading-relaxed">${text.replace(/\n/g,'<br/>')}</p>
+      </div>`;
+  } else {
+    wrap.innerHTML=`<div class="bg-forest-900 rounded-2xl rounded-tr-sm px-4 py-3 max-w-[85%]"><p class="text-white text-sm leading-relaxed">${text}</p></div>`;
+  }
+  c.appendChild(wrap);
+  c.scrollTop=c.scrollHeight;
+}
+ 
+function showTyping(){
+  const c=document.getElementById('chat-msgs');
+  const t=document.createElement('div');t.id='typing-indicator';t.className='flex gap-2.5';
+  t.innerHTML=`<div class="w-7 h-7 rounded-full bg-forest-100 flex items-center justify-center flex-shrink-0"><svg width="12" height="12" fill="none" stroke="#14532D" stroke-width="2.2" stroke-linecap="round" viewBox="0 0 24 24"><path d="M12 2a10 10 0 1 0 0 20A10 10 0 0 0 12 2z"/><path d="M12 8v8M8 12h8"/></svg></div><div class="bg-ink-50 rounded-2xl rounded-tl-sm px-4 py-3"><div class="flex items-center gap-1"><div class="w-2 h-2 rounded-full bg-ink-400 dot1"></div><div class="w-2 h-2 rounded-full bg-ink-400 dot2"></div><div class="w-2 h-2 rounded-full bg-ink-400 dot3"></div></div></div>`;
+  c.appendChild(t);c.scrollTop=c.scrollHeight;
+}
+function removeTyping(){const t=document.getElementById('typing-indicator');if(t)t.remove();}
+ 
+/* ─── INIT ─── */
+buildCar();buildChips();applyFilter();
+cTmr=setInterval(()=>carMove(1),4500);
+</script>
+</body>
+</html>
+ 
